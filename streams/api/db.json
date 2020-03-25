@@ -11,6 +11,12 @@
       "description": "this is test stream 2",
       "userId": "103309089442441787016",
       "id": 2
+    },
+    {
+      "title": "Test stream 3 ",
+      "description": "This is test stream 3",
+      "userId": "103309089442441787016",
+      "id": 3
     }
   ]
 }
