@@ -3,8 +3,11 @@ import ChatInput from './ChatInput'
 import ChatMessage from './ChatMessage'
 import { connect } from 'react-redux';
 import {List} from 'semantic-ui-react';
+var dotenv = require('dotenv');
+dotenv.config();
+'ws://localhost:3030'
 
-const URL = 'ws://localhost:3030'
+const URL = process.env.APP_HOST_NAME + process.env.WEB_SOCKET_PORT
 
 class Chat extends Component {
   state = {

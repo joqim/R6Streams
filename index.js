@@ -8,10 +8,12 @@ var streams = require('./routes/streams');
 var uploads = require('./routes/upload');
 
 const WebSocket = require('ws');
+dotenv.config();
 
-const wss = new WebSocket.Server({ port: 3030 });
+const wss = new WebSocket.Server({ port: process.env.WEB_SOCKET_PORT });
 
 wss.on('connection', function connection(ws) {
+  console.log('ws connection succeeded')
   ws.on('message', function incoming(data) {
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
@@ -21,7 +23,6 @@ wss.on('connection', function connection(ws) {
   });
 });
 
-dotenv.config();
 const app = express();
 app.use(bodyParser.json({ limit: "50mb" }));
 
