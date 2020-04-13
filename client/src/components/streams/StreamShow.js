@@ -1,68 +1,83 @@
 import React from 'react';
-import flv from 'flv.js';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { fetchStream } from '../../actions';
+import { Grid, Segment, Divider } from "semantic-ui-react";
+import { Dimmer, Loader, List, Image } from 'semantic-ui-react';
+import Chat from './Chat'
+import ReactPlayer from 'react-player';
 
 class StreamShow extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.videoRef = React.createRef();  
-    //video player documentation requires code to be attached 
-    //in index.html so instead we use react reference
-  }
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchStream(id);
-    this.buildPlayer();
-  }
-
-  componentDidUpdate() {
-    this.buildPlayer();
-  }
-
-  componentWillUnmount() {
-    this.player.destroy();
-  }
-
-  buildPlayer() {
-    if(this.player || !this.props.stream) {
-      return;
-    }
-
-    const { id } = this.props.match.params;
-    this.player = flv.createPlayer({
-      type: 'flv',
-      url: `http://localhost:8000/live/${id}.flv`
-    });
-    this.player.attachMediaElement(this.videoRef.current);
-    this.player.load();
-    this.player.play();
-
   }
 
   render() {
-    if(!this.props.stream) {
-      return <div>Loading</div>
+    if(this.props.stream.stream) {
+      const {title, description, stream_url, createdAt} = this.props.stream.stream[0]
+      return (
+        <div>
+          <Segment placeholder>
+        <Grid columns={2} stackable textAlign='left'>
+          <Grid.Row stretched>
+            <Grid.Column computer={11} textAlign='left'>
+              {!!stream_url && (
+                <div>
+                <ReactPlayer
+                  controls
+                  url={stream_url}
+                  className='react-player'
+                  playing = { false }
+                  width='100%'
+                  height='99%'
+                />
+              </div>
+              )}
+              {!stream_url && (
+                <Dimmer active inverted>
+                  <Loader inverted>Stream Loading</Loader>
+                </Dimmer>
+              )}
+            </Grid.Column>
+            <Divider vertical/>
+            <Grid.Column computer={3}>
+              <Chat />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+          <List>
+            <List.Item>
+              <Image avatar src='https://i.pinimg.com/originals/8c/c4/92/8cc492be438c76b99371d691d23cff8f.jpg' />
+              <List.Content>
+                <List.Header as='a'>{title}</List.Header>
+                <List.Description>
+                  {description}
+                </List.Description>
+                <div style={{ fontSize: '10px'}}>
+                  {moment(createdAt).format("MM-DD-YYYY")}
+                </div>
+              </List.Content>
+            </List.Item>
+          </List>
+        </Segment>
+        </div>
+      )
     }
-
-    const {title, description} = this.props.stream
-    return (
-      <div>
-        <video ref={this.videoRef} style={{ width: '50%'}} controls/>
-        <h1>
-          {title}
-        </h1>
-        <h5>
-          {description}
-        </h5>
-      </div>
-    )
+    else {
+      return (
+        <div>
+          <Dimmer active inverted>
+            <Loader inverted>Fetching stream details</Loader>
+          </Dimmer>
+        </div>
+      )
+    }
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return { stream: state.streams[ownProps.match.params.id]}
+  return { stream: state.streams, user: state.auth }
 }
 
 export default connect(mapStateToProps, {fetchStream})(StreamShow);

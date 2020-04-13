@@ -21,10 +21,20 @@ class GoogleAuth extends React.Component {
   onAuthChange = (isSignedIn) => {
     //if true, call signIn action creator passing userId
     if(isSignedIn) {
-      this.props.signIn(this.auth.currentUser.get().getId());
+      let userId = this.auth.currentUser.get().getId();
+      let userName = this.auth.currentUser.get().getBasicProfile().getName();
+      let userAvatar = this.generateAvatar(userName);
+      this.props.signIn(userId, userName, userAvatar);
     } else {
       this.props.signOut();
     }
+  };
+
+  generateAvatar = (userName) => {
+    let firstInitial = userName.charAt(0);
+    let whiteSpaceIndex = userName.indexOf(' ')
+    let secondInitial = userName.charAt(whiteSpaceIndex+1)
+    return firstInitial+secondInitial;
   };
 
   onSignInClick = () => {
@@ -56,7 +66,9 @@ class GoogleAuth extends React.Component {
   }
 
   render() {
-    return <div>{this.renderAuthButton()}</div>;
+    return <div style={{ marginTop: '5px', marginBottom: '5px'}}>
+      {this.renderAuthButton()}
+    </div>;
   }
 }
 

@@ -12,7 +12,9 @@ class StreamCreate extends React.Component {
   render() {
     return (
       <div>
-        <h3>Create a Stream</h3>
+        <div style={{ fontSize: '16px', marginLeft: '25px', marginTop: '10px', fontFamily: 'verdana'}}>
+          Create a Stream
+        </div>
         <StreamForm onSubmit={this.onSubmit}/>
       </div>
     );

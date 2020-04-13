@@ -12,15 +12,15 @@ export default (state = {}, action) => {
     case FETCH_STREAMS:
       //since mapKeys is a big object, we use ...
       //converts array of objects into an object of objects with each object having a key of id ( 1,2,3...)
-      return { ...state, ..._.mapKeys(action.payload, 'id')}
+      return { ...state, streams : action.payload.data}
     case FETCH_STREAM:
-      return { ...state, [action.payload.id]: action.payload}
+      return { ...state, stream : action.payload.data}
     case CREATE_STREAM:
-      return { ...state, [action.payload.id]: action.payload}
+      return { ...state, stream : 'stream created'}
     case EDIT_STREAM:
-      return { ...state, [action.payload.id]: action.payload}
+      return { ...state, stream : 'stream edited'}
     case DELETE_STREAM:
-      return _.omit(state, action.payload);
+      return _.omit(state, action.payload.data);
     default:
       return state;
   }

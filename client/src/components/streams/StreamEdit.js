@@ -1,40 +1,16 @@
-import _ from 'lodash';
 import React from 'react';
-import { connect } from 'react-redux';
-import { fetchStream, editStream } from '../../actions';
-import { Dimmer, Loader } from 'semantic-ui-react';
-import StreamForm from './StreamForm';
+import { FilePond } from 'react-filepond';
+import 'filepond/dist/filepond.min.css';
 
 class StreamEdit extends React.Component {
-  componentDidMount() {
-    this.props.fetchStream(this.props.match.params.id);
-  }
-
-  onSubmit = (formValues) => {
-    this.props.editStream(this.props.match.params.id, formValues);
-  }
 
   render() {
-    if(!this.props.stream) {
-      return (
-        <Dimmer active inverted>
-          <Loader inverted>Loading</Loader>
-        </Dimmer>
-      );
-    }
-  return (
-    <div>
-      <h3>Edit a stream</h3>
-      <StreamForm 
-        initialValues={_.pick(this.props.stream, 'title', 'description')}
-        onSubmit={this.onSubmit}/>
-    </div>
-  );
+    return (
+      <div>
+        <FilePond name="stream-file" server={`/upload/${this.props.match.params.id}`} />
+      </div> 
+    );
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return { stream: state.streams[ownProps.match.params.id] };
-};
-
-export default connect(mapStateToProps, {fetchStream, editStream })(StreamEdit);
+export default StreamEdit;

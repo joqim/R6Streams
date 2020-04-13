@@ -11,10 +11,12 @@ import {
 } from './types';
 
 //action creators returned to authReducer
-export const signIn = (userId) => {
+export const signIn = (userId, userName, userAvatar) => {
   return {
     type: SIGN_IN,
-    payload: userId
+    payloadId: userId,
+    payloadName: userName,
+    payloadAvatar: userAvatar
   }
 }
 
@@ -28,7 +30,7 @@ export const createStream = formValues => async (dispatch, getState) => {
   const { userId } = getState().auth;
   const response = await axios.post('/streams', {...formValues, userId});
 
-  dispatch({ type: CREATE_STREAM, payload: response.data})
+  dispatch({ type: CREATE_STREAM, payload: response})
   //navigate to root route
   history.push('/');
 };
@@ -36,19 +38,19 @@ export const createStream = formValues => async (dispatch, getState) => {
 export const fetchStreams = () => async dispatch => {
   const response = await axios.get('/streams')
 
-  dispatch({ type: FETCH_STREAMS, payload: response.data })
+  dispatch({ type: FETCH_STREAMS, payload: response })
 };
 
 export const fetchStream = (id) => async dispatch => {
-  const response = await axios.get(`/streams/${id}`)
+  const response = await axios.get(`/streams/edit/${id}`)
 
-  dispatch({ type: FETCH_STREAM, payload: response.data })
+  dispatch({ type: FETCH_STREAM, payload: response })
 }
 
 export const editStream = (id, formValues) => async dispatch => {
-  const response = await axios.patch(`/streams/${id}`, formValues);
+  const response = await axios.patch(`/streams/edit/${id}`, formValues);
 
-  dispatch({ type: EDIT_STREAM, payload: response.data});
+  dispatch({ type: EDIT_STREAM, payload: response});
   history.push('/');
 }
 
