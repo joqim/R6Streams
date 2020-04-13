@@ -31,7 +31,7 @@ app.use(bodyParser.json({ limit: "50mb" }));
 
 //db connection
 mongoose.Promise = Promise;
-mongoose.connect(process.env.MONGODB_URL, {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
