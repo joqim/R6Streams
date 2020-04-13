@@ -6,7 +6,7 @@ import {List} from 'semantic-ui-react';
 var dotenv = require('dotenv');
 dotenv.config();
 
-const URL = process.env.APP_HOST_NAME + process.env.WEB_SOCKET_PORT
+const URL = location.origin.replace(/^http/, 'ws')
 
 class Chat extends Component {
   state = {

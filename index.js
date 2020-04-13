@@ -10,7 +10,8 @@ var uploads = require('./routes/upload');
 const WebSocket = require('ws');
 dotenv.config();
 
-const wss = new WebSocket.Server({ port: process.env.WEB_SOCKET_PORT });
+const PORT = process.env.WEB_SOCKET_PORT || 3030
+const wss = new WebSocket.Server({ port: PORT });
 
 wss.on('connection', function connection(ws) {
   console.log('ws connection succeeded')
