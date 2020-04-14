@@ -16,7 +16,7 @@ app.listen(port);
 console.log("App listening on port" + port);
 
 //create a websocket server for the same express server
-const wss = new Server({ app });
+const wss = new Server({ server: app });
 wss.on('connection', function connection(ws) {
   console.log('ws connection succeeded')
   ws.on('message', function incoming(data) {
