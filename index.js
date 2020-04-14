@@ -6,6 +6,7 @@ var dotenv = require('dotenv');
 var Promise = require('bluebird');
 var streams = require('./routes/streams');
 var uploads = require('./routes/upload');
+const http = require('http')
 
 const WebSocket = require('ws');
 dotenv.config();
