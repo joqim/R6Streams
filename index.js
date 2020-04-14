@@ -3,25 +3,19 @@ var path = require('path');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var dotenv = require('dotenv');
-dotenv.config();
 var Promise = require('bluebird');
 var streams = require('./routes/streams');
 var uploads = require('./routes/upload');
-const { Server } = require('ws');
 
-//create an express server on the PORT
-const app = express();
-const PORT = process.env.PORT || 5000;
-app.listen(PORT);
+const WebSocket = require('ws');
+dotenv.config();
 
-console.log("App listening on port" + PORT);
+const PORT = process.env.WEB_SOCKET_PORT || 3030
+const wss = new WebSocket.Server({ port: PORT });
 
-//create a websocket server for the same express server
-const wss = new Server({ port: PORT});
 wss.on('connection', function connection(ws) {
   console.log('ws connection succeeded')
   ws.on('message', function incoming(data) {
-    console.log('ws server recieved a message')
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(data);
@@ -29,6 +23,9 @@ wss.on('connection', function connection(ws) {
     });
   });
 });
+
+const app = express();
+app.use(bodyParser.json({ limit: "50mb" }));
 
 global.app = app;
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -53,4 +50,9 @@ app.get("*", (req,res) => {
     res.sendFile(path.join(__dirname, "client","build","index.html"));
 });
 
-// app.listen(8080, () => console.log("Running on host"));
+const port = process.env.PORT || 5000;
+app.listen(port);
+
+console.log("App listening on port" + port);
+
+app.listen(8080, () => console.log("Running on host"));
