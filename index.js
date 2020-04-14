@@ -3,6 +3,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var dotenv = require('dotenv');
+dotenv.config();
 var Promise = require('bluebird');
 var streams = require('./routes/streams');
 var uploads = require('./routes/upload');
@@ -10,13 +11,13 @@ const { Server } = require('ws');
 
 //create an express server on the PORT
 const app = express();
-const port = process.env.PORT || 5000;
-app.listen(port);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT);
 
-console.log("App listening on port" + port);
+console.log("App listening on port" + PORT);
 
 //create a websocket server for the same express server
-const wss = new Server({ server: app });
+const wss = new Server({ port: PORT});
 wss.on('connection', function connection(ws) {
   console.log('ws connection succeeded')
   ws.on('message', function incoming(data) {
