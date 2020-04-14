@@ -20,15 +20,14 @@ const wss = new Server({ server: app });
 wss.on('connection', function connection(ws) {
   console.log('ws connection succeeded')
   ws.on('message', function incoming(data) {
+    console.log('ws server recieved a message')
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(data);
-      }y
+      }
     });
   });
 });
-
-app.use(bodyParser.json({ limit: "50mb" }));
 
 global.app = app;
 app.use(bodyParser.urlencoded({ extended: true }));
