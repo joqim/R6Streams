@@ -7,7 +7,7 @@ var dotenv = require('dotenv');
 // const path = require('path')
 // dotenv.config({path: require('find-config')('.env')});
 
-const URL = window.location.origin.replace(/^https/, 'ws');
+var URL = window.location.origin.replace(/^https/, 'ws');
 URL = URL+':3030'
 console.log('url in chat', URL)
 
