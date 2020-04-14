@@ -10,7 +10,7 @@ var uploads = require('./routes/upload');
 const WebSocket = require('ws');
 dotenv.config();
 
-const PORT = process.env.WEB_SOCKET_PORT || 3030
+const PORT = process.env.PORT || 3030
 console.log('WEB socket port given by heroku is', PORT);
 const wss = new WebSocket.Server({ port: PORT });
 
