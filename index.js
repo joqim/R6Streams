@@ -10,9 +10,18 @@ var uploads = require('./routes/upload');
 const WebSocket = require('ws');
 dotenv.config();
 
-const PORT = process.env.PORT || 3030
-console.log('WEB socket port given by heroku is', PORT);
-const wss = new WebSocket.Server({ port: PORT });
+// const PORT = process.env.WEB_SOCKET_PORT || 3030
+// const wss = new WebSocket.Server({ port: PORT });
+
+const app = express();
+
+const port = process.env.PORT || 3000
+const httpServer = http.createServer(app)
+console.log('http server listening on', PORT);
+const wss = new WebSocket.Server({
+    'server': httpServer
+})
+httpServer.listen(port);
 
 wss.on('connection', function connection(ws) {
   console.log('ws connection succeeded')
@@ -25,7 +34,6 @@ wss.on('connection', function connection(ws) {
   });
 });
 
-const app = express();
 app.use(bodyParser.json({ limit: "50mb" }));
 
 global.app = app;
@@ -51,9 +59,9 @@ app.get("*", (req,res) => {
     res.sendFile(path.join(__dirname, "client","build","index.html"));
 });
 
-const port = process.env.PORT || 5000;
-app.listen(port);
+// const port = process.env.PORT || 5000;
+// app.listen(port);
 
-console.log("App listening on port" + port);
+// console.log("App listening on port" + port);
 
-app.listen(8080, () => console.log("Running on host"));
+// app.listen(8080, () => console.log("Running on host"));
