@@ -4,9 +4,11 @@ import ChatMessage from './ChatMessage'
 import { connect } from 'react-redux';
 import {List} from 'semantic-ui-react';
 var dotenv = require('dotenv');
-dotenv.config();
+// const path = require('path')
+// dotenv.config({path: require('find-config')('.env')});
 
-const URL = window.location.origin.replace(/^http/, 'ws')
+const URL = window.location.origin.replace(/^http/, 'ws');
+console.log('url in chat', URL)
 
 class Chat extends Component {
   state = {
