@@ -18,7 +18,7 @@ const app = express();
 
 const port = process.env.PORT || 3000
 const httpServer = http.createServer(app)
-console.log('http server listening on', PORT);
+console.log('http server listening on', port);
 const wss = new WebSocket.Server({
     'server': httpServer
 })
