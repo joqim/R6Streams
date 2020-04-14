@@ -8,6 +8,7 @@ var dotenv = require('dotenv');
 // dotenv.config({path: require('find-config')('.env')});
 
 var URL = window.location.origin.replace(/^http/, 'ws');
+URL = URL + ':3030'
 console.log('url in chat', URL)
 
 class Chat extends Component {

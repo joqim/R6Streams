@@ -12,6 +12,7 @@ dotenv.config();
 
 const PORT = process.env.WEB_SOCKET_PORT || 3030
 const wss = new WebSocket.Server({ port: PORT });
+console.log('ws server on port', PORT)
 
 wss.on('connection', function connection(ws) {
   console.log('ws connection succeeded')
