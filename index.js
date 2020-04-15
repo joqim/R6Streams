@@ -6,8 +6,7 @@ var dotenv = require('dotenv');
 var Promise = require('bluebird');
 var streams = require('./routes/streams');
 var uploads = require('./routes/upload');
-
-const https = require('https');
+const http = require('http');
 
 const WebSocket = require('ws');
 dotenv.config();
@@ -37,16 +36,13 @@ app.get("*", (req,res) => {
     res.sendFile(path.join(__dirname, "client","build","index.html"));
 });
 
-const httpsServer = https.createServer(app)
-const wss = new WebSocket.Server({ server: httpsServer });
+const port = process.env.PORT || 5000;
 
-const port = process.env.PORT || 5000
+var server = http.createServer(app);
+server.listen(port);
 
-httpsServer.listen( port, function listening(){
-  console.log('listening on'+ port);
-});
-
-console.log('wss in  index', wss)
+const wss = new WebSocket.Server({ server });
+console.log('wss', wss)
 
 wss.on('connection', function connection(ws) {
   console.log('ws connection succeeded')
