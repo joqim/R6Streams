@@ -46,6 +46,8 @@ httpsServer.listen( port, function listening(){
   console.log('listening on'+ port);
 });
 
+console.log('wss in  index', wss)
+
 wss.on('connection', function connection(ws) {
   console.log('ws connection succeeded')
   ws.on('message', function incoming(data) {
