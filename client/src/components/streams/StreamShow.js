@@ -48,7 +48,7 @@ class StreamShow extends React.Component {
         </Grid>
           <List>
             <List.Item>
-              <Image avatar src='https://i.pinimg.com/originals/8c/c4/92/8cc492be438c76b99371d691d23cff8f.jpg' />
+              <Image avatar src='https://pbs.twimg.com/profile_images/1075817928732241920/IBlGn3cT_400x400.jpg' />
               <List.Content>
                 <List.Header as='a'>{title}</List.Header>
                 <List.Description>
