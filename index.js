@@ -7,26 +7,12 @@ var Promise = require('bluebird');
 var streams = require('./routes/streams');
 var uploads = require('./routes/upload');
 
+const https = require('https');
+
 const WebSocket = require('ws');
 dotenv.config();
 
-const PORT = process.env.WEB_SOCKET_PORT || 3030
-const wss = new WebSocket.Server({ port: PORT });
-console.log('ws server on port', PORT)
-
-wss.on('connection', function connection(ws) {
-  console.log('ws connection succeeded')
-  ws.on('message', function incoming(data) {
-    wss.clients.forEach(function each(client) {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(data);
-      }
-    });
-  });
-});
-
 const app = express();
-app.use(bodyParser.json({ limit: "50mb" }));
 
 global.app = app;
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -51,9 +37,22 @@ app.get("*", (req,res) => {
     res.sendFile(path.join(__dirname, "client","build","index.html"));
 });
 
-const port = process.env.PORT || 5000;
-app.listen(port);
+const httpsServer = https.createServer(app)
+const wss = new WebSocket.Server({ server: httpsServer });
 
-console.log("App listening on port" + port);
+const port = process.env.PORT || 5000
 
-app.listen(8080, () => console.log("Running on host"));
+httpsServer.listen( port, function listening(){
+  console.log('listening on'+ port);
+});
+
+wss.on('connection', function connection(ws) {
+  console.log('ws connection succeeded')
+  ws.on('message', function incoming(data) {
+    wss.clients.forEach(function each(client) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(data);
+      }
+    });
+  });
+});
