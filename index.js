@@ -42,7 +42,6 @@ var server = http.createServer(app);
 server.listen(port);
 
 const wss = new WebSocket.Server({ server });
-console.log('wss', wss)
 
 wss.on('connection', function connection(ws) {
   console.log('ws connection succeeded')

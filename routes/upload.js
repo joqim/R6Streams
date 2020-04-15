@@ -32,6 +32,9 @@ router.post("/:id",multer.single('stream-file'), async(req,res,next) => {
         return;
       }
     
+      res.status(200);
+      res.send({ message: 'file is being uploaded' });
+
       // Create a new blob in the bucket and upload the file data.
       const blob = bucket.file(req.file.originalname);
       const blobStream = blob.createWriteStream();
@@ -57,8 +60,6 @@ router.post("/:id",multer.single('stream-file'), async(req,res,next) => {
     
       blobStream.end(req.file.buffer);
       console.log('exiting blob ')
-      res.status(200);
-      res.send({ message: 'file uploaded' });
     }
     catch(error) {
         res.status(400);
